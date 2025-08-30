@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Home · Mini Social{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-lg-6">
+    {% if user.is_authenticated %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <form method="post" enctype="multipart/form-data" action="{% url 'post_create' %}">{% csrf_token %}
+          {{ form.as_p }}
+          <button class="btn btn-primary">Post</button>
+        </form>
+      </div>
+    </div>
+    {% endif %}
+    {% for post in posts %}
+      {% include 'network/partials/post_card.html' with post=post %}
+    {% empty %}
+      <p class="text-muted">No posts yet. Follow someone or write your first post!</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

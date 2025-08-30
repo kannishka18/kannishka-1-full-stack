@@ -1,0 +1,29 @@
+{% load static %}
+
+<div class="card mb-3 post-card" data-post-id="{{ post.id }}">
+  <div class="card-body">
+    <div class="d-flex align-items-center mb-2">
+
+      {% if post.author.profile.avatar %}
+          <img class="avatar me-2" src="{{ post.author.profile.avatar.url }}" alt="avatar">
+      {% else %}
+          <img class="avatar me-2" src="{% static 'network/img/default-avatar.png' %}" alt="avatar">
+      {% endif %}
+
+      <div>
+        <a href="{% url 'profile' post.author.username %}" class="fw-semibold">@{{ post.author.username }}</a>
+        <div class="small text-muted">{{ post.created|date:"M j, H:i" }}</div>
+      </div>
+    </div>
+    <p class="mb-2">{{ post.content }}</p>
+    {% if post.image %}
+      <img class="img-fluid rounded mb-2" src="{{ post.image.url }}" alt="post image">
+    {% endif %}
+    <div class="d-flex align-items-center gap-3">
+      <button class="btn btn-sm btn-outline-primary like-btn" data-url="{% url 'like_toggle' post.pk %}">
+        ❤️ <span class="like-count">{{ post.likes.count }}</span>
+      </button>
+      <a class="btn btn-sm btn-outline-secondary" href="{{ post.get_absolute_url }}">Comments ({{ post.comments.count }})</a>
+    </div>
+  </div>
+</div>
